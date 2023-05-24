@@ -1,1 +1,43 @@
-compose
+services:
+  web01:
+    build:
+      context: ./site1
+      dockerfile: Dockerfile
+    image: app01
+    container_name: web01
+    networks:
+      - asa-prova
+  web02:
+    build:
+      context: ./site2
+      dockerfile: Dockerfile
+    image: app02
+    container_name: web02
+    networks:
+      - asa-prova
+  web03:
+    build:
+      context: ./site3
+      dockerfile: Dockerfile
+    image: app03
+    container_name: web03
+    networks:
+      - asa-prova
+  proxy:
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    image: proxy
+    container_name: proxy
+    ports:
+      - "8080:80"
+    depends_on:
+      - web01
+      - web02
+      - web03
+    networks:
+      - asa-prova
+#Docker Networks
+networks:
+  asa-prova:
+    driver: bridge
